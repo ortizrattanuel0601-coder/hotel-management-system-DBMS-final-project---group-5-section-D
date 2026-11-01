@@ -44,6 +44,9 @@ const reservationRoutes = require('./routes/reservationRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const serviceOrderRoutes = require('./routes/serviceOrderRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const reportRoutes = require('./routes/reportRoutes');
+
 
 // Register API routes
 app.use('/api/guests', guestRoutes);
@@ -52,6 +55,8 @@ app.use('/api/reservations', reservationRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/service-orders', serviceOrderRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/reports', reportRoutes);
 
 // Handle unknown routes
 app.use((req, res) => {
