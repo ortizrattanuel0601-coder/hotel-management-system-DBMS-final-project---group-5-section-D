@@ -1,3 +1,6 @@
+   //Contributor: Palmis, Mark John Paul M.
+   //Module: Employee Management
+
  const db = require('./db');
 
 async function getAllEmployees() {
