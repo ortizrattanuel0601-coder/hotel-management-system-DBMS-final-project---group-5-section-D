@@ -1,4 +1,7 @@
- const employeeModel = require('../models/employeeModel');
+  //Contributor: Palmis, Mark John Paul M.
+  //Module: Employee Management
+
+const employeeModel = require('../models/employeeModel');
 
 async function getEmployees(req, res) {
     try {
