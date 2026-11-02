@@ -105,9 +105,42 @@ async function deleteGuest(req, res) {
     }
 }
 
+async function getReviews(req, res) {
+    try {
+        const reviews = await guestModel.getAllReviews();
+        res.status(200).json(reviews);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'Failed to retrieve reviews.' });
+    }
+}
+
+async function createReview(req, res) {
+    try {
+        const { guest_id, rating, comment } = req.body;
+
+        if (!guest_id || !rating) {
+            return res.status(400).json({ message: 'Guest ID and rating are required.' });
+        }
+
+        const reviewId = await guestModel.createReview(guest_id, rating, comment);
+
+        res.status(201).json({
+            message: 'Review created successfully.',
+            review_id: reviewId
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'Failed to create review.' });
+    }
+}
+
+
 module.exports = {
     getGuests,
     createGuest,
     updateGuest,
-    deleteGuest
+    deleteGuest,
+    getReviews,
+    createReview
 };
