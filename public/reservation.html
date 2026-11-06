@@ -1,0 +1,134 @@
+// Contributor: Ricazplaza
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations | Lumière Grand</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="index.html" class="brand">
+            <span>LUMIÈRE GRAND</span>
+            <small>HOTEL & HOSPITALITY</small>
+        </a>
+
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="rooms.html">Rooms & Suites</a>
+            <a href="reservation.html" class="active">Reservations</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <p class="eyebrow">YOUR STAY BEGINS HERE</p>
+            <h1>Make a Reservation</h1>
+            <p>Plan your stay with us. Complete the details below to begin your reservation.</p>
+        </section>
+
+        <section class="content-section">
+            <div class="form-container">
+                <h2>Reservation Details</h2>
+                <p>Please provide your information and preferred accommodation.</p>
+
+                <form id="reservation-form">
+
+                    <label for="guest-name">Full Name</label>
+                    <input
+                        type="text"
+                        id="guest-name"
+                        name="guest_name"
+                        placeholder="Kindly enter your fullname"
+                        required
+                    >
+
+                    <label for="guest-email">Email Address</label>
+                    <input
+                        type="email"
+                        id="guest-email"
+                        name="email"
+                        placeholder="Please furnish your email address"
+                        required
+                    >
+
+                    <label for="guest-phone">Contact Number</label>
+                    <input
+                        type="tel"
+                        id="guest-phone"
+                        name="phone"
+                        placeholder="Kindly site your phone number"
+                        required
+                    >
+
+                    <label for="room_type">Room Type</label>
+                    <select id="room_type" name="room_type" required>
+                        <option value="">Choose a room type</option>
+                        <option value="single">Single</option>
+                        <option value="double">Double</option>
+                        <option value="deluxe">Deluxe</option>
+                        <option value="family">Family</option>
+                        <option value="suite">Suite</option>
+                    </select>
+
+                    <label for="check-in">Check-in Date</label>
+                    <input
+                        type="date"
+                        id="check-in"
+                        name="check_in"
+                        required
+                    >
+
+                    <label for="check-out">Check-out Date</label>
+                    <input
+                        type="date"
+                        id="check-out"
+                        name="check_out"
+                        required
+                    >
+
+                    <label for="guests">Number of Guests</label>
+                    <input
+                        type="number"
+                        id="guests"
+                        name="guests"
+                        min="1"
+                        value="1"
+                        required
+                    >
+
+                    <label for="requests">Special Requests</label>
+                    <textarea
+                        id="requests"
+                        name="special_requests"
+                        rows="4"
+                        placeholder="Any additional requests?"
+                    ></textarea>
+
+                    <button type="submit" class="btn">
+                        Submit Reservation
+                    </button>
+
+                </form>
+
+                <p class="form-note">
+                    We 
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>LUMIÈRE GRAND</p>
+        <small>Shining standard of elegance.</small>
+        <h3>We extend our warmest welcome to Lumiere Grand.</h3>
+    </footer>
+
+    <script src="reservation.js"></script>
+</body>
+</html>
