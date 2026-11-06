@@ -1,70 +1,99 @@
+// Contributor: Ricaplaza
+// Modifier:Palmis (for invoices)
 
-const express = require('express');
-require('dotenv').config();
+const db = require('./db');
 
-const db = require('./models/db');
+async function getAllReservations() {
+    const [rows] = await db.query(`
+        SELECT
+            r.reservation_id,
+            r.guest_id,
+            g.first_name AS guest_name,
+            r.employee_id,
+            r.reservation_date,
+            r.check_in_date,
+            r.check_out_date,
+            r.reservation_status,
+            r.special_requests
+        FROM reservations r
+        LEFT JOIN guests g ON r.guest_id = g.guest_id
+        ORDER BY r.reservation_id
+    `);
 
-const app = express();
+    return rows;
+}
 
-app.use(express.json());
+async function createReservation(
+    guest_id,
+    employee_id,
+    reservation_date,
+    check_in_date,
+    check_out_date,
+    reservation_status,
+    special_requests
+) {
+    const [result] = await db.query(
+        `INSERT INTO reservations
+        (guest_id, employee_id, reservation_date, check_in_date,
+         check_out_date, reservation_status, special_requests)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [
+            guest_id,
+            employee_id,
+            reservation_date,
+            check_in_date,
+            check_out_date,
+            reservation_status,
+            special_requests
+        ]
+    );
 
-// Serve frontend files
-app.use(express.static('public'));
+    return result.insertId;
+}
 
-// Test MySQL connection
-app.get('/api/test-db', async (req, res) => {
-    try {
-        const [rows] = await db.query(
-            'SELECT DATABASE() AS database_name'
-        );
+async function updateReservation(
+    reservation_id,
+    guest_id,
+    employee_id,
+    reservation_date,
+    check_in_date,
+    check_out_date,
+    reservation_status,
+    special_requests
+) {
+    const [result] = await db.query(
+        `UPDATE reservations
+        SET guest_id = ?, employee_id = ?, reservation_date = ?,
+            check_in_date = ?, check_out_date = ?,
+            reservation_status = ?, special_requests = ?
+        WHERE reservation_id = ?`,
+        [
+            guest_id,
+            employee_id,
+            reservation_date,
+            check_in_date,
+            check_out_date,
+            reservation_status,
+            special_requests,
+            reservation_id
+        ]
+    );
 
-        res.status(200).json({
-            success: true,
-            message: 'MySQL connected successfully!',
-            database: rows[0].database_name
-        });
-    } catch (error) {
-        console.error(error.message);
+    return result.affectedRows;
+}
 
-        res.status(500).json({
-            success: false,
-            message: 'Database connection failed.'
-        });
-    }
-});
+async function deleteReservation(reservation_id) {
+    const [result] = await db.query(
+        'DELETE FROM reservations WHERE reservation_id = ?',
+        [reservation_id]
+    );
 
-// Import route files
-const guestRoutes = require('./routes/guestRoutes');
-const roomRoutes = require('./routes/roomRoutes');
-const reservationRoutes = require('./routes/reservationRoutes');
-const employeeRoutes = require('./routes/employeeRoutes');
-const serviceRoutes = require('./routes/serviceRoutes');
-const serviceOrderRoutes = require('./routes/serviceOrderRoutes');
+    return result.affectedRows;
+}
 
-// Register API routes
-app.use('/api/guests', guestRoutes);
-app.use('/api/rooms', roomRoutes);
-app.use('/api/reservations', reservationRoutes);
-app.use('/api/employees', employeeRoutes);
-app.use('/api/services', serviceRoutes);
-app.use('/api/service-orders', serviceOrderRoutes);
-
-// Handle unknown API endpoints
-app.use('/api', (req, res) => {
-    res.status(404).json({
-        success: false,
-        message: 'API endpoint not found.'
-    });
-});
-
-// Handle other unknown routes
-app.use((req, res) => {
-    res.status(404).send('Page not found.');
-});
-
-// Start server
-const PORT = process.env.PORT || 1234;
-
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+module.exports = {
+    getAllReservations,
+    createReservation,
+    updateReservation,
+    deleteReservation
+};
