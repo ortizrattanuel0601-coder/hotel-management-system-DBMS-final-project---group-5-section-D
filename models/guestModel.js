@@ -32,9 +32,20 @@ async function deleteGuest(guest_id) {
     return result.affectedRows;
 }
 
+async function getAllReviews() {
+    const [res] = await db.query('SELECT * FROM reviews ORDER BY review_id');
+    return res;
+}
+
+async function createReview(guest_id, rating, comment) {
+    const [data] = await db.query('INSERT INTO reviews (guest_id, rating, comment) VALUES (?, ?, ?,)', [guest_id, rating, comment]);
+    return data.insertedID;  
+}
 module.exports = {
     getAllGuests,
     createGuest,
     updateGuest,
-    deleteGuest
+    deleteGuest,
+    getAllReviews,
+    createReview
 };
