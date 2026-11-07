@@ -10,3 +10,4 @@ router.put('/:id', guestController.updateGuest);
 router.delete('/:id', guestController.deleteGuest);
 
 module.exports = router;
+
