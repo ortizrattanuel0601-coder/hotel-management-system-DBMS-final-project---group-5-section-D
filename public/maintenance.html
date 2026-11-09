@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance | Lumi&egrave;re Grand</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        [hidden] { display: none !important; }
+
+        .mt-message {
+            min-height: 1.4rem;
+            margin-top: 12px;
+            font-family: var(--clean);
+            font-size: 13px;
+            color: var(--taupe);
+        }
+
+        .mt-message.error { color: #e57373; }
+        .mt-message.success { color: #81c784; }
+
+        .mt-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0 4px;
+            font-family: var(--clean);
+            font-size: 12px;
+            color: var(--taupe);
+        }
+
+        .mt-toolbar select {
+            padding: 7px 10px;
+            background: var(--black);
+            color: var(--ivory);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            font-family: var(--clean);
+            font-size: 12px;
+        }
+
+        .mt-table-wrap {
+            overflow-x: auto;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .mt-table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--clean);
+            font-size: 13px;
+        }
+
+        .mt-table-wrap th,
+        .mt-table-wrap td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .mt-table-wrap th {
+            color: var(--gold);
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: var(--surface);
+            white-space: nowrap;
+        }
+
+        .mt-table-wrap td { color: var(--ivory); }
+        .mt-table-wrap td.mt-issue { min-width: 220px; }
+
+        .mt-table-wrap tr.mt-flag td { background: rgba(229, 115, 115, 0.08); }
+        .mt-table-wrap tr.mt-idle td { color: var(--taupe); }
+
+        .mt-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border: 1px solid var(--taupe);
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--taupe);
+        }
+
+        .mt-badge.low { color: #7fb77e; border-color: #7fb77e; }
+        .mt-badge.medium { color: var(--gold); border-color: var(--gold); }
+        .mt-badge.high { color: #ffb74d; border-color: #ffb74d; }
+        .mt-badge.urgent { color: #e57373; border-color: #e57373; }
+
+        .mt-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .mt-actions button {
+            padding: 6px 10px;
+            background: var(--black);
+            color: var(--ivory);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            font-family: var(--clean);
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .mt-actions button:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .mt-actions button.danger:hover {
+            border-color: #e57373;
+            color: #e57373;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="index.html" class="brand">
+            <span>LUMI&Egrave;RE GRAND</span>
+            <small>HOTEL &amp; HOSPITALITY</small>
+        </a>
+
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="rooms.html">Rooms &amp; Suites</a>
+            <a href="reservations.html">Reservations</a>
+            <a href="room-records.html">Room Records</a>
+            <a href="maintenance.html" class="active">Maintenance</a>
+            <a href="invoices.html">Invoices</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <p class="eyebrow">MANAGEMENT</p>
+            <h1>Maintenance</h1>
+            <p>Log room problems, assign them to staff, and mark them completed.</p>
+        </section>
+
+        <section class="content-section">
+            <div class="form-container">
+                <h2 id="form-title">Add Maintenance Request</h2>
+
+                <form id="maintenance-form">
+                    <input type="hidden" id="request-id">
+
+                    <label for="room-select">Room</label>
+                    <select id="room-select" required>
+                        <option value="">Loading rooms...</option>
+                    </select>
+
+                    <label for="item-input">Item / Category</label>
+                    <input type="text" id="item-input" maxlength="30"
+                           placeholder="e.g. Air conditioner" required>
+
+                    <label for="issue-input">Issue Description</label>
+                    <textarea id="issue-input" rows="3" maxlength="255"
+                              placeholder="Describe the problem" required></textarea>
+
+                    <label for="priority-select">Priority</label>
+                    <select id="priority-select" required></select>
+
+                    <label for="employee-select">Assigned Employee</label>
+                    <select id="employee-select">
+                        <option value="">Unassigned</option>
+                    </select>
+
+                    <label for="date-input">Request Date (optional, defaults to today)</label>
+                    <input type="date" id="date-input">
+
+                    <button type="submit" class="btn" id="save-button">Save Request</button>
+                    <button type="button" class="btn" id="cancel-button" hidden>Cancel Edit</button>
+                </form>
+
+                <p id="form-message" class="mt-message"></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>All Requests</h2>
+
+            <div class="mt-toolbar">
+                <label for="status-filter">Show</label>
+                <select id="status-filter">
+                    <option value="all">All</option>
+                    <option value="open">Open</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+
+            <p id="table-message" class="mt-message"></p>
+
+            <div class="mt-table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Room</th>
+                            <th>Item</th>
+                            <th>Issue</th>
+                            <th>Priority</th>
+                            <th>Assigned To</th>
+                            <th>Requested</th>
+                            <th>Completed</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="request-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Employee Maintenance Workload</h2>
+            <p>Every employee and every request: requests nobody has taken appear first, and employees without requests show as "No requests".</p>
+
+            <div class="center-content">
+                <button type="button" class="btn" id="report-button">Load Report</button>
+            </div>
+
+            <p id="report-message" class="mt-message"></p>
+
+            <div class="mt-table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Status</th>
+                            <th>Request</th>
+                            <th>Room</th>
+                            <th>Issue</th>
+                            <th>Priority</th>
+                            <th>Requested</th>
+                            <th>Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>LUMI&Egrave;RE GRAND</p>
+        <small>Shining standard of elegance.</small>
+    </footer>
+
+    <script src="maintenance.js"></script>
+</body>
+</html>
