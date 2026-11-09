@@ -247,6 +247,7 @@ const invoiceRoutes = require('./routes/invoiceRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const recordRoutes = require('./routes/recordRoutes');
+const maintenanceRoutes = require('./routes/maintenanceRoutes');
 
 app.use('/api/guests', guestRoutes);
 app.use('/api/rooms', roomRoutes);
@@ -259,6 +260,7 @@ app.use('/api/invoices', invoiceRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/room-records', recordRoutes);
+app.use('/api/maintenance', maintenanceRoutes);
 
 // 404 Handlers
 app.use('/api', (req, res) => {
